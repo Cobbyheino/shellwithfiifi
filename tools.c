@@ -1,21 +1,29 @@
 #include "shell.h"
-void freearray2D(char **arr)
+/**
+ * freearrays - free memory blocks of array
+ * @array: the array to be freed
+ * Return: freed block
+ */
+
+void freearrays(char **array)
 {
 	int i;
-	if (!arr)
+
+	if (!array)
 		return;
-	for (i = 0; arr[i]; i++)
-		{
-			free(arr[i]);
-			arr[i] = NULL;
-		}
-		free(arr); 
-		arr = NULL;
+
+	for (i = 0; array[i]; i++)
+	{
+		free(array[i]);
+		array[i] = NULL;
+	}
+
+	free(array), array = NULL;
 }
 
 void print_error(char *name, char *cmd, int idx)
 {
-	char *index, mssg[] = ":not found\n";
+	char *index, mssg[] = ": not found\n";
 
 	index = _itoa(idx);
 
@@ -66,4 +74,3 @@ void reverse_string(char *str, int len)
 		end--;
 	}
 }
-

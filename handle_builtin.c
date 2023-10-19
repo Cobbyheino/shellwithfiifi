@@ -1,9 +1,15 @@
 #include "shell.h"
+/**
+ * is_builtin - implements builtin func
+ * @command: command for function
+ * Return: null
+ */
 
 int is_builtin(char *command)
 {
 	char *builtins[] = {
-	       "exit", "env", "setenv", "cd"	
+		"exit", "env", "setenv", 
+		"cd", NULL
 	};
 	int i;
 
@@ -12,12 +18,22 @@ int is_builtin(char *command)
 		if (_strcmp(command, builtins[i]) == 0)
 			return (1);
 	}
-	return (0);
-	
+	return (0);		
 }
+
+/**
+ * handle_builtin - handles builtin func
+ * @command: command for function
+ * @argv: arg vec
+ * @status: sta of func
+ * @int: index
+ * Return: null
+ */
 
 void handle_builtin(char **command, char **argv, int *status, int idx)
 {
+	(void) argv;
+	(void) idx;
 
 	if (_strcmp(command[0], "exit") == 0)
 		exit_shell(command, argv, status, idx);
@@ -25,6 +41,15 @@ void handle_builtin(char **command, char **argv, int *status, int idx)
 	else if (_strcmp(command[0], "env") == 0)
 		print_env(command, status);
 }
+
+/**
+ * exit_shell - handles builtin func
+ * @command: command for function
+ * @argv: arg vec
+ * @status: sta of func
+ * @int: index
+ * Return: null
+ */
 
 void exit_shell(char **command, char **argv, int *status, int idx)
 {
@@ -35,7 +60,7 @@ void exit_shell(char **command, char **argv, int *status, int idx)
 	{
 		if (is_positive_number(command[1]))
 		{
-			exit_value = _atoi(command[1]);
+			exit_value = _atoi(command[1]);	
 		}
 		else
 		{
@@ -47,15 +72,24 @@ void exit_shell(char **command, char **argv, int *status, int idx)
 			write(STDERR_FILENO, command[1], _strlen(command[1]));
 			write(STDERR_FILENO, "\n", 1);
 			free(index);
-			freearray2D(command);
+			freearrays(command);
 			(*status) = 2;
-			return;
+			return;			
 		}
+		
+		
 	}
-	freearray2D(command);
+	freearrays(command);
 	exit(exit_value);
 }
 
+/**
+ * print_env - handles builtin func
+ * @command: command for function
+ * @status: sta of func
+ * 
+ * Return: null
+ */
 void print_env(char **command, int *status)
 {
 	int i;
@@ -65,6 +99,10 @@ void print_env(char **command, int *status)
 		write(STDOUT_FILENO, environ[i], _strlen(environ[i]));
 		write(STDOUT_FILENO, "\n", 1);
 	}
-	freearray2D(command);
+	freearrays(command);
 	(*status) = 0;
+	
 }
+
+
+

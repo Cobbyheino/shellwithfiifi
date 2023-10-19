@@ -1,22 +1,30 @@
 #include "shell.h"
-char *_getenv(char *variables)
+
+/**
+ * _getenv - returns the strcpy of our environ
+ * @vars: contains str variables
+ *
+ * Return: null
+ */
+
+char *_getenv(char *vars)
 {
-	char *tmp, *key, *value, *env;
+	char *tmp, *k;
+	char *val, *env;
 	int i;
 
 	for (i = 0; environ[i]; i++)
 	{
 		tmp = _strdup(environ[i]);
-		key = strtok(tmp, "=");
-		if (_strcmp(key, variables) == 0)
+		k = strtok(tmp, "=");
+		if (_strcmp(k, vars) == 0)
 		{
-			value = strtok(NULL, "\n");
-			env = _strdup(value);
+			val = strtok(NULL, "\n");
+			env = _strdup(val);
 			free(tmp);
-			return (env);			
+			return (env);
 		}
 		free(tmp), tmp = NULL;
 	}
 	return (NULL);
 }
-

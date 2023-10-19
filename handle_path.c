@@ -1,46 +1,46 @@
 #include "shell.h"
+/**
+ * _getpath - gets path from envin
+ * @command: command to find path
+ *
+ * Return: null
+ */
 char *_getpath(char *command)
 {
-	char *path_env, *full_cmd, *dir;
+	char *env_path, *full_cmd, *dirx;
 	int i;
 	struct stat st;
-	/* setting path in env*/
-	for (i = 0; command[i]; i++)
+
+	for (i = 0; command[i]; i++)/* setting path in env*/
 	{
 		if (command[i] == '/')
 		{
-			if (stat(command, &st) == 0)
+			if (stat(command, &st) == 0)/*if there is path*/
 			return (_strdup(command));
-		
 			return (NULL);
 		}
 	}
-	/* if the user unset path (cant get directories)*/
-	path_env = _getenv("PATH");
-	if (!path_env)
+	env_path = _getenv("PATH");/* if the path is unset path*/
+	if (!env_path)
 		return (NULL);
-	/*try handle the path*/
-	dir = strtok(path_env, ":");
-	while (dir)
+	dirx = strtok(env_path, ":");/* handle the path*/
+	while (dirx)
 	{
-		/* size = len(directory) + len(command) + 2 ('/' and '\0') */
-		full_cmd = malloc(_strlen(dir) + _strlen(command) + 2);
+		full_cmd = malloc(_strlen(dirx) + _strlen(command) + 2);
 		if (full_cmd)
 		{
-			_strcpy(full_cmd, dir);
+			_strcpy(full_cmd, dirx);
 			_strcat(full_cmd, "/");
 			_strcat(full_cmd, command);
 			if (stat(full_cmd, &st) == 0)
 			{
-				free(path_env);
+				free(env_path);
 				return (full_cmd);
 			}
 		free(full_cmd), full_cmd = NULL;
-
-		dir = strtok(NULL, ":");
+		dirx = strtok(NULL, ":");
 		}
 	}
-	free(path_env);
+	free(env_path);
 	return (NULL);
 }
-
